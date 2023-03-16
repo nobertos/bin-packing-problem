@@ -1,4 +1,6 @@
-MAX_CAPACITY = 30
-INPUT_ITEMS = [2, 3, 4, 5, 10, 11, 11, 12,
-               20, 21, 22, 23, 23, 25,
-               25, 26, 28, 29, 30]
+MAX_CAPACITY = 10
+INPUT_ITEMS = [3, 4, 6, 7]
+#
+
+
+print(f"len(INPUT_ITEMS): {len(INPUT_ITEMS)}")
