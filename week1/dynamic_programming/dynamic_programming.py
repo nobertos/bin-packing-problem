@@ -1,5 +1,6 @@
-from utils.__instance__ import MAX_CAPACITY
+from utils.__instance__ import MAX_CAPACITY, NUM_ITEMS
 from utils.solution import Solution
+
 # import cell
 from dynamic_programming.cell import Cell
 
@@ -55,7 +56,7 @@ def get_solution(DP, num_items):
 
 def init_dyn_programming(item_sizes):
     item_sizes.sort(reverse=True)
-    num_items = len(item_sizes)
+    num_items = NUM_ITEMS
     # init step 1
     DP = [[Cell.create_cell(item_sizes, i, cost=1) for i in range(num_items)]]
 

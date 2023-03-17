@@ -2,7 +2,7 @@ import time
 from branch_bound.branch_bound import branch_and_bound
 from dynamic_programming.dynamic_programming import dynamic_programming, get_solution
 from utils.solution import Solution
-from utils.__instance__ import INPUT_ITEMS
+from utils.__instance__ import INPUT_ITEMS, NUM_ITEMS
 
 
 class bcolors:
@@ -33,7 +33,7 @@ def main():
         f"\n{bcolors.WARNING}{bcolors.BOLD}First Solution:{bcolors.ENDC} {first_sol}, time: {time_list[1] - time_list[0]}\n")
 
     dyn_programming = get_solution(
-        dynamic_programming(INPUT_ITEMS), len(INPUT_ITEMS))
+        dynamic_programming(INPUT_ITEMS), NUM_ITEMS)
     time_list.append(time.time())
     print(
         f"\n{bcolors.WARNING}{bcolors.BOLD}Dynamic Programming:{bcolors.ENDC} {dyn_programming}, time: {time_list[2] - time_list[1]}\n")

@@ -61,11 +61,8 @@ class Solution:
     def add_item_idx(self, item_size, idx):
         if (item_size <= self.bin_list[idx].remaining_capacity):
             self.bin_list[idx].push(item_size)
-        else:
-            self.num_bins += 1
-            new_bin = Bin()
-            new_bin.push(item_size)
-            self.bin_list.insert(idx, new_bin)
+            return
+        raise ValueError("Item size exceeds bin remaining capacity")
 
     def best_fit(self, items):
         for item in items:

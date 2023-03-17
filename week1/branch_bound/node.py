@@ -3,7 +3,6 @@ from utils.__instance__ import MAX_CAPACITY
 import math
 from typing import List
 from enum import Enum
-# to use this version of the code, you need to prune when child.lower_bound >= best_num_bins
 
 
 class order(Enum):
@@ -14,11 +13,9 @@ class order(Enum):
 class Node:
     def __init__(self, item_size=0, remaining_items=[], parent=None, order=None):
         self.item_size = item_size
-
         self.remaining_items = remaining_items
         self.parent = parent
         self.order = order
-
         self.remaining_capacities = parent.remaining_capacities.copy(
         ) if parent is not None else []
         self.num_bins = parent.num_bins if parent is not None else 0
