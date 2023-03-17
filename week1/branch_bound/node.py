@@ -13,11 +13,11 @@ class order(Enum):
 class Node:
     def __init__(self, item_size=0, remaining_items=[], parent=None, order=None):
         self.item_size = item_size
-        self.remaining_items = remaining_items
+        self.remaining_items = remaining_items[:]
         self.parent = parent
         self.order = order
-        self.remaining_capacities = parent.remaining_capacities.copy(
-        ) if parent is not None else []
+        self.remaining_capacities = parent.remaining_capacities[:] if parent is not None else [
+        ]
         self.num_bins = parent.num_bins if parent is not None else 0
         self.inserted_idx = None
         self.calc_remaining_capacities()
@@ -62,13 +62,13 @@ class Node:
         return False
 
     def separate(self):
-        bound1 = MAX_CAPACITY - min(self.remaining_items)
+        bound1 = MAX_CAPACITY - self.remaining_items[-1]
         bound2 = MAX_CAPACITY//2
         len_items1 = 0
         len_items2 = 0
         sum_items2 = 0
         sum_items3 = 0
-        capacities = self.remaining_capacities.copy()
+        capacities = self.remaining_capacities[:]
         for item in self.remaining_items:
             if self._best_fit(item, capacities):
                 continue
@@ -85,6 +85,9 @@ class Node:
     def evaluation_fn(self):
         len_items1, len_items2, sum_items2, sum_items3 = self.separate()
         return len_items1 + len_items2 + max(0, math.ceil((sum_items3 - (len_items2*MAX_CAPACITY - sum_items2))/MAX_CAPACITY))
+
+    def evaluation_fn2(self):
+        return math.ceil(sum(self.remaining_items)/MAX_CAPACITY)
 
     def lower_bound(self):
         return self.num_bins + self.evaluation_fn()

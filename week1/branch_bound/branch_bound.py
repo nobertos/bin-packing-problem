@@ -3,20 +3,11 @@ from utils.__instance__ import MAX_CAPACITY, NUM_ITEMS
 from utils.solution import Solution
 
 
-def create_node(item_size, parent_remaining_items, parent, order):
-    remaining_items = parent_remaining_items.copy()
-    return Node(item_size, remaining_items, parent, order)
-
-
 def init_branch_and_bound(item_sizes):
-
     item_sizes.sort(reverse=True)
     root = Node(remaining_items=item_sizes)
-    root_bound = root.lower_bound()
-    active_nodes = []
-    active_nodes.append(root)
-    print(
-        f"root lower_bound {root_bound}")
+    active_nodes = [root]
+    print(f"root lower_bound {root.lower_bound()}")
     best_num_bins = NUM_ITEMS
     return active_nodes, best_num_bins
 
@@ -28,7 +19,6 @@ def branch_and_bound(item_sizes):
     optimal_node = None
     num_iterations = 0
     num_pruned = 0
-    print("\n---------------------------------------\n")
     print(f"Initial best solution {best_num_bins}")
 
     while active_nodes:
@@ -43,17 +33,12 @@ def branch_and_bound(item_sizes):
         if node.lower_bound() >= best_num_bins:
             num_pruned += 1
             continue
-
         current_item = node.remaining_items[0]
         remaining_items = node.remaining_items[1:]
-
-        child = create_node(
-            current_item, remaining_items, node, order=order.ADD_BIN)
-
+        child = Node(current_item, remaining_items, node, order.ADD_BIN)
         active_nodes.append(child)
         if node.fit(current_item):
-            child = create_node(
-                current_item, remaining_items, node, order=order.FIT_ITEM)
+            child = Node(current_item, remaining_items, node, order.FIT_ITEM)
             active_nodes.append(child)
 
     print(f"Number of pruned nodes: {num_pruned}")

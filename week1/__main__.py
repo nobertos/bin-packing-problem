@@ -29,14 +29,17 @@ def main():
     time_list = [time.time()]
     first_sol = first_solution(INPUT_ITEMS)
     time_list.append(time.time())
+    print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
     print(
         f"\n{bcolors.WARNING}{bcolors.BOLD}First Solution:{bcolors.ENDC} {first_sol}, time: {time_list[1] - time_list[0]}\n")
+    print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
 
     dyn_programming = get_solution(
         dynamic_programming(INPUT_ITEMS), NUM_ITEMS)
     time_list.append(time.time())
     print(
         f"\n{bcolors.WARNING}{bcolors.BOLD}Dynamic Programming:{bcolors.ENDC} {dyn_programming}, time: {time_list[2] - time_list[1]}\n")
+    print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
     branch_bound = branch_and_bound(INPUT_ITEMS)
     time_list.append(time.time())
     print(
