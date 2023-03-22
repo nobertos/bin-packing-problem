@@ -70,6 +70,9 @@ class Node:
         sum_items3 = 0
         capacities = self.remaining_capacities[:]
         for item in self.remaining_items:
+            # this condition is not necessary, but it is good for calculating the best lower bound
+            # it's bad for performance, you can remove it but you need to remove the math.ceil
+            # from the evaluation_fn function, that is to say, you need to change it to floor or just remove it
             if self._best_fit(item, capacities):
                 continue
             if item > bound1:

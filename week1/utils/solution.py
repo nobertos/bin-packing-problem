@@ -41,8 +41,11 @@ class Solution:
 
     def __str__(self):
         solution = f"Solution: {self.num_bins} \nbins:\n"
+        num_items = 0
         for bin in self.bin_list:
             solution += f"{bin}\n"
+            num_items += len(bin.items)
+        solution += f"number of items: {num_items}\n"
         return solution
 
     def add_items(self, items):
