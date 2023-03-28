@@ -11,7 +11,7 @@ class order(Enum):
 
 
 class Node:
-    def __init__(self, item_size=0, remaining_items=[], parent=None, order=None):
+    def __init__(self, item_size=0, remaining_items=[], parent=None, order=None, inserted_idx=None):
         self.item_size = item_size
         self.remaining_items = remaining_items[:]
         self.parent = parent
@@ -19,7 +19,7 @@ class Node:
         self.remaining_capacities = parent.remaining_capacities[:] if parent is not None else [
         ]
         self.num_bins = parent.num_bins if parent is not None else 0
-        self.inserted_idx = None
+        self.inserted_idx = inserted_idx
         self.calc_remaining_capacities()
 
     def calc_remaining_capacities(self):
@@ -29,37 +29,8 @@ class Node:
                 self.inserted_idx = self.num_bins
                 self.num_bins += 1
                 return
-            bestfit_idx = self.best_fit()
-            self.inserted_idx = bestfit_idx
-            self.remaining_capacities[bestfit_idx] -= self.item_size
+            self.remaining_capacities[self.inserted_idx] -= self.item_size
             return
-
-    def best_fit(self):
-        bestfit_idx = 0
-        bestfit_cap = math.inf
-        for (i, capacity) in enumerate(self.remaining_capacities):
-            if (self.item_size <= capacity) and (capacity < bestfit_cap):
-                bestfit_idx = i
-                bestfit_cap = capacity
-        return bestfit_idx
-
-    def fit(self, item):
-        for capacity in self.remaining_capacities:
-            if item <= capacity:
-                return True
-        return False
-
-    def _best_fit(self, item, capacities):
-        bestfit_idx = None
-        for (i, capacity) in enumerate(capacities):
-            if item > capacity:
-                continue
-            bestfit_idx = i
-            break
-        if bestfit_idx is not None:
-            capacities[bestfit_idx] -= item
-            return True
-        return False
 
     def separate(self):
         bound1 = MAX_CAPACITY - self.remaining_items[-1]
