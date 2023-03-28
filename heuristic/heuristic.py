@@ -2,7 +2,7 @@ from utils.__instance__ import MAX_CAPACITY, NUM_ITEMS
 from utils.solution import Solution
 
 # import cell
-from dynamic_programming.cell import Cell
+from heuristic.cell import Cell
 
 
 def add_optimal(DP, k):
@@ -19,7 +19,7 @@ def get_solution(DP, num_items):
     return solution
 
 
-def init_dyn_programming(item_sizes):
+def init_heuristic(item_sizes):
     item_sizes.sort(reverse=True)
     num_items = NUM_ITEMS
     DP = [Cell.create_cell(item_sizes, 0)]
@@ -27,9 +27,9 @@ def init_dyn_programming(item_sizes):
     return DP, num_items
 
 
-def dynamic_programming(item_sizes):
+def heuristic(item_sizes):
 
-    DP, num_items = init_dyn_programming(item_sizes)
+    DP, num_items = init_heuristic(item_sizes)
 
     for k in range(1, num_items):
         add_optimal(DP, k)

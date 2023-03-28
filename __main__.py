@@ -1,6 +1,6 @@
 import time
 from branch_bound.branch_bound import branch_and_bound
-from dynamic_programming.dynamic_programming import dynamic_programming, get_solution
+from heuristic.heuristic import heuristic, get_solution
 from utils.solution import Solution
 from utils.__instance__ import INPUT_ITEMS, NUM_ITEMS
 
@@ -31,21 +31,18 @@ def main():
     time_list.append(time.time())
     print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
     print(
-        f"\n{bcolors.WARNING}{bcolors.BOLD}First Solution:{bcolors.ENDC} {first_sol}, time: {time_list[1] - time_list[0]}\n")
+        f"\n{bcolors.WARNING}{bcolors.BOLD}First Solution:{bcolors.ENDC} {first_sol.num_bins}, time: {time_list[1] - time_list[0]}\n")
     print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
 
-    dyn_programming = get_solution(
-        dynamic_programming(INPUT_ITEMS), NUM_ITEMS)
+    heuristic_res = get_solution(heuristic(INPUT_ITEMS), NUM_ITEMS)
     time_list.append(time.time())
     print(
-        f"\n{bcolors.WARNING}{bcolors.BOLD}Dynamic Programming:{bcolors.ENDC} {dyn_programming}, time: {time_list[2] - time_list[1]}\n")
+        f"\n{bcolors.WARNING}{bcolors.BOLD}Heuristic:{bcolors.ENDC} {heuristic_res}, time: {time_list[2] - time_list[1]}\n")
     print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
     branch_bound = branch_and_bound(INPUT_ITEMS)
     time_list.append(time.time())
     print(
         f"\n{bcolors.WARNING}{bcolors.BOLD}Branch and bound:{bcolors.ENDC} {branch_bound}, time: {time_list[3] - time_list[2]}")
-
-    # print(f"\nDynamic Programming: {dynamic_programming(INPUT_ITEMS)}")
 
 
 if __name__ == "__main__":

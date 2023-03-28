@@ -7,14 +7,15 @@ def init_branch_and_bound(item_sizes):
     item_sizes.sort(reverse=True)
     root = Node(remaining_items=item_sizes)
     active_nodes = [root]
-    print(f"root lower_bound {root.lower_bound()}")
+    root_lb = root.lower_bound()
+    print(f"root lower_bound {root_lb}")
     best_num_bins = NUM_ITEMS
-    return active_nodes, best_num_bins
+    return active_nodes, best_num_bins, root_lb
 
 
 def branch_and_bound(item_sizes):
 
-    active_nodes, best_num_bins = init_branch_and_bound(
+    active_nodes, best_num_bins, root_lb = init_branch_and_bound(
         item_sizes)
     optimal_node = None
     num_iterations = 0
@@ -30,14 +31,18 @@ def branch_and_bound(item_sizes):
                 optimal_node = node
                 print(f"Found new best solution {best_num_bins}")
             continue
+
         if node.lower_bound() >= best_num_bins:
             num_pruned += 1
             continue
+
         current_item = node.remaining_items[0]
         remaining_items = node.remaining_items[1:]
         child = Node(current_item, remaining_items, node, order.ADD_BIN)
         active_nodes.append(child)
         if node.fit(current_item):
+            if current_item == 6:
+                print("six does fit")
             child = Node(current_item, remaining_items, node, order.FIT_ITEM)
             active_nodes.append(child)
 

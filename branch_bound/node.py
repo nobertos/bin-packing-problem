@@ -29,19 +29,19 @@ class Node:
                 self.inserted_idx = self.num_bins
                 self.num_bins += 1
                 return
-            best_fit_idx = self.best_fit()
-            self.inserted_idx = best_fit_idx
-            self.remaining_capacities[best_fit_idx] -= self.item_size
+            bestfit_idx = self.best_fit()
+            self.inserted_idx = bestfit_idx
+            self.remaining_capacities[bestfit_idx] -= self.item_size
             return
 
     def best_fit(self):
-        best_fit_idx = 0
+        bestfit_idx = 0
+        bestfit_cap = math.inf
         for (i, capacity) in enumerate(self.remaining_capacities):
-            if self.item_size > capacity:
-                continue
-            best_fit_idx = i
-            break
-        return best_fit_idx
+            if (self.item_size <= capacity) and (capacity < bestfit_cap):
+                bestfit_idx = i
+                bestfit_cap = capacity
+        return bestfit_idx
 
     def fit(self, item):
         for capacity in self.remaining_capacities:
@@ -50,14 +50,14 @@ class Node:
         return False
 
     def _best_fit(self, item, capacities):
-        best_fit_idx = None
+        bestfit_idx = None
         for (i, capacity) in enumerate(capacities):
             if item > capacity:
                 continue
-            best_fit_idx = i
+            bestfit_idx = i
             break
-        if best_fit_idx is not None:
-            capacities[best_fit_idx] -= item
+        if bestfit_idx is not None:
+            capacities[bestfit_idx] -= item
             return True
         return False
 
@@ -68,12 +68,15 @@ class Node:
         len_items2 = 0
         sum_items2 = 0
         sum_items3 = 0
-        capacities = self.remaining_capacities[:]
+        # reduce the self.remaining_capacities to its sum
+
+        remaining_capacity = sum(self.remaining_capacities)
         for item in self.remaining_items:
             # this condition is not necessary, but it is good for calculating the best lower bound
             # it's bad for performance, you can remove it but you need to remove the math.ceil
             # from the evaluation_fn function, that is to say, you need to change it to floor or just remove it
-            if self._best_fit(item, capacities):
+            if item <= remaining_capacity:
+                remaining_capacity -= item
                 continue
             if item > bound1:
                 len_items1 += 1
@@ -87,10 +90,20 @@ class Node:
 
     def evaluation_fn(self):
         len_items1, len_items2, sum_items2, sum_items3 = self.separate()
-        return len_items1 + len_items2 + max(0, math.ceil((sum_items3 - (len_items2*MAX_CAPACITY - sum_items2))/MAX_CAPACITY))
+        return len_items1 + len_items2 + max(0, ((sum_items3 - (len_items2*MAX_CAPACITY - sum_items2))/MAX_CAPACITY))
 
     def evaluation_fn2(self):
-        return math.ceil(sum(self.remaining_items)/MAX_CAPACITY)
+        sum = 0
+        remaining_capacity = 0
+        for capacity in self.remaining_capacities:
+            remaining_capacity += capacity
+        for item in self.remaining_items:
+            if item <= remaining_capacity:
+                remaining_capacity -= item
+                continue
+            sum += item
+
+        return sum/MAX_CAPACITY
 
     def lower_bound(self):
         return self.num_bins + self.evaluation_fn()
