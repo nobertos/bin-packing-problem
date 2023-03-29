@@ -9,7 +9,7 @@ def init_branch_and_bound(item_sizes):
     active_nodes = [root]
     root_lb = root.lower_bound()
     print(f"root lower_bound {root_lb}")
-    best_num_bins = NUM_ITEMS
+    best_num_bins = NUM_ITEMS + 1
     return active_nodes, best_num_bins, root_lb
 
 
@@ -31,20 +31,19 @@ def branch_and_bound(item_sizes):
                 optimal_node = node
                 print(f"Found new best solution {best_num_bins}")
             continue
-
-        if node.lower_bound() > best_num_bins:
+        if node.lower_bound() >= best_num_bins:
             num_pruned += 1
             continue
-
         current_item = node.remaining_items[0]
         remaining_items = node.remaining_items[1:]
         child = Node(current_item, remaining_items, node, order.ADD_BIN)
         active_nodes.append(child)
-        for (i, capacity) in enumerate(node.remaining_capacities):
-            if current_item <= capacity:
-                child = Node(current_item, remaining_items,
-                             node, order.FIT_ITEM, i)
-                active_nodes.append(child)
+        if node.does_fit(current_item):
+            for (i, capacity) in enumerate(node.remaining_capacities):
+                if current_item <= capacity:
+                    child = Node(current_item, remaining_items,
+                                 node, order.FIT_ITEM, i)
+                    active_nodes.append(child)
 
     print(f"Number of pruned nodes: {num_pruned}")
     print(f"Number of iterations: {num_iterations}")

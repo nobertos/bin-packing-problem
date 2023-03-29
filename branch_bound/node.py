@@ -32,6 +32,12 @@ class Node:
             self.remaining_capacities[self.inserted_idx] -= self.item_size
             return
 
+    def does_fit(self, item):
+        for (i, capacity) in enumerate(self.remaining_capacities):
+            if item <= capacity:
+                return True
+        return False
+
     def separate(self):
         bound1 = MAX_CAPACITY - self.remaining_items[-1]
         bound2 = MAX_CAPACITY//2
@@ -43,9 +49,6 @@ class Node:
 
         remaining_capacity = sum(self.remaining_capacities)
         for item in self.remaining_items:
-            # this condition is not necessary, but it is good for calculating the best lower bound
-            # it's bad for performance, you can remove it but you need to remove the math.ceil
-            # from the evaluation_fn function, that is to say, you need to change it to floor or just remove it
             if item <= remaining_capacity:
                 remaining_capacity -= item
                 continue
@@ -65,9 +68,7 @@ class Node:
 
     def evaluation_fn2(self):
         sum = 0
-        remaining_capacity = 0
-        for capacity in self.remaining_capacities:
-            remaining_capacity += capacity
+        remaining_capacity = sum(self.remaining_capacities)
         for item in self.remaining_items:
             if item <= remaining_capacity:
                 remaining_capacity -= item
