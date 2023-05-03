@@ -1,42 +1,51 @@
 import numpy as np
 import random as rd
-from first_fit import first_fit, space
-def simulated_annealing(items, ideal_quality=None, temperature=1, time=10000, schedule = 0.1):
+from heuristics import  best_fit, first_fit, next_fit, space
+def simulated_annealing(items,  temperature, time, schedule ):
     temperature = temperature
     solution: list[list[int]]= first_fit(items)
     print(f"first_fit solution :{solution}")
+    print(f"len : {len(solution)}")
+    print()
+    print()
+    print()
     best = solution
     time = time
-    ideal_quality = ideal_quality if ideal_quality != None else 1
     num_change = 0
     while True:
         temp = tweak(solution)
         rand = np.random.rand()
         quality_solution = quality(solution)
         quality_temp = quality(temp)
-        if (quality_temp > quality_solution or (rand < np.exp(( quality_temp - quality_solution)/temperature))):
+        delta = quality_temp - quality_solution
+        if delta > 0 or (rand < np.exp(delta/temperature)):
             num_change += 1
             solution = temp
-        temperature -= schedule * temperature
+        decrease(temperature, schedule)
         time -= 1 
-        if (quality_solution < quality(best)):
-
-            num_change +=1
+        if (quality_solution > quality(best)):
             best = solution
 
-        if (best == ideal_quality or time==0 or temperature <= 0):
+        if (time==0 or temperature <= 1):
             break
 
     print(f"number of changes {num_change}")
+    print()
+    print()
+    print()
     return best
 
 
+def decrease(temperature, schedule):
+    temperature /= (1 + schedule* temperature)
 
 def quality(solution):
-    sum = 0
+    objective_function = 0
     for bin in solution:
-        sum += space(bin)
-    return 1/sum
+        bin_load = sum(bin)
+        objective_function += bin_load ** 2
+
+    return objective_function
 
 def tweak(solution):
     neighbor = []
@@ -63,16 +72,22 @@ def tweak(solution):
         bin_indices.remove(temp_bin_idx)
         temp_bin = neighbor[temp_bin_idx]
 
+        if space(temp_bin) - removed_item >= 0:
+            temp_bin.append(removed_item)
+            break
         exchanged = False
         for (item_idx, item) in enumerate(temp_bin):
-            if (space(temp_bin) + item - removed_item)>= 0 or (space_bin - item >= 0):
+            if (space(temp_bin) + item - removed_item)>= 0 and (space_bin - item >= 0):
                 bin.insert( removed_item_idx, item)
                 del temp_bin[item_idx]
+
                 temp_bin.insert(item_idx, removed_item)
                 exchanged = True
                 break
         if exchanged:
             break
+    if len(bin) == 0 :
+        del neighbor[bin_idx]
     return neighbor
 
 
