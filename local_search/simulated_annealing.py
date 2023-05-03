@@ -3,7 +3,7 @@ import random as rd
 from heuristics import  best_fit, first_fit, next_fit, space
 def simulated_annealing(items,  temperature, time, schedule ):
     temperature = temperature
-    solution: list[list[int]]= first_fit(items)
+    solution: list[list[int]]= next_fit(items)
     print(f"first_fit solution :{solution}")
     print(f"len : {len(solution)}")
     print()
