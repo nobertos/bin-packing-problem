@@ -1,6 +1,4 @@
-from utils.__instance__ import MAX_CAPACITY
-
-
+from utils.instance import MAX_CAPACITY
 class Bin:
     def __init__(self):
         self.remaining_capacity = MAX_CAPACITY
@@ -32,6 +30,14 @@ class Solution:
         self.num_bins = num_bins
         self.bin_list = bin_list if bin_list is not None else [
             Bin() for _ in range(num_bins)]
+
+    @staticmethod
+    def from_list(solution_list):
+        solution = Solution()
+        for bin in  solution_list:
+            for item in bin:
+                solution.add_item(item)
+        return solution
 
     def __eq__(self, other):
         return self.num_bins == other.num_bins
@@ -66,6 +72,7 @@ class Solution:
             self.bin_list[idx].push(item_size)
             return
         raise ValueError("Item size exceeds bin remaining capacity")
+    
 
     def best_fit(self, items):
         for item in items:

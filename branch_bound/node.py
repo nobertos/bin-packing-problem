@@ -1,5 +1,5 @@
 from utils.solution import Solution
-from utils.__instance__ import MAX_CAPACITY
+from utils.instance import MAX_CAPACITY
 import math
 from typing import List
 from enum import Enum

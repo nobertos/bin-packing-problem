@@ -1,4 +1,4 @@
-MAX_CAPACITY = 50
+from utils.instance import MAX_CAPACITY
 def space(bin):
     return MAX_CAPACITY  - sum(bin)
 

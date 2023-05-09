@@ -1,4 +1,4 @@
-from utils.__instance__ import MAX_CAPACITY, NUM_ITEMS
+from utils.instance import MAX_CAPACITY, NUM_ITEMS
 from utils.solution import Solution
 
 # import cell

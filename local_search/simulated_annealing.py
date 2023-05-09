@@ -1,14 +1,9 @@
 import numpy as np
 import random as rd
-from heuristics import  best_fit, first_fit, next_fit, space
+from local_search.heuristics import  best_fit, first_fit, next_fit, space
 def simulated_annealing(items,  temperature, time, schedule ):
     temperature = temperature
-    solution: list[list[int]]= next_fit(items)
-    print(f"first_fit solution :{solution}")
-    print(f"len : {len(solution)}")
-    print()
-    print()
-    print()
+    solution: list[list[int]]= best_fit(items)
     best = solution
     time = time
     num_change = 0
@@ -21,7 +16,7 @@ def simulated_annealing(items,  temperature, time, schedule ):
         if delta > 0 or (rand < np.exp(delta/temperature)):
             num_change += 1
             solution = temp
-        decrease(temperature, schedule)
+        temperature = decrease(temperature, schedule)
         time -= 1 
         if (quality_solution > quality(best)):
             best = solution
@@ -29,15 +24,14 @@ def simulated_annealing(items,  temperature, time, schedule ):
         if (time==0 or temperature <= 1):
             break
 
+
     print(f"number of changes {num_change}")
-    print()
-    print()
-    print()
+
     return best
 
 
 def decrease(temperature, schedule):
-    temperature /= (1 + schedule* temperature)
+    return temperature / (1 + schedule* temperature)
 
 def quality(solution):
     objective_function = 0
