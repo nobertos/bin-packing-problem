@@ -60,20 +60,20 @@ def main():
     #---------------------------------------------------
 
     print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
-    local_search = Solution.from_list(simulated_annealing(INPUT_ITEMS,time=100000000, temperature=10, schedule=0.001))
+    local_search = Solution.from_list(simulated_annealing(INPUT_ITEMS,time=100000000, temperature=10, schedule=0.0001))
     time_list.append(time.time())
     print(
         f"\n{bcolors.WARNING}{bcolors.BOLD}Simulated annealing:{bcolors.ENDC} {local_search.num_bins}, time: {time_list[4] - time_list[3]}")
 
     #---------------------------------------------------
 
-    print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
-    dp_solution = dynamic_programming(INPUT_ITEMS)
-    time_list.append(time.time())
-
-    print(
-        f"\n{bcolors.WARNING}{bcolors.BOLD}dynamic programming:{bcolors.ENDC} {dp_solution}, time: {time_list[5] - time_list[4]}")
-
+    # print(f"\n{bcolors.OKGREEN}{bcolors.BOLD}---------------------------------------{bcolors.ENDC}\n")
+    # dp_solution = dynamic_programming(INPUT_ITEMS)
+    # time_list.append(time.time())
+    #
+    # print(
+    #     f"\n{bcolors.WARNING}{bcolors.BOLD}dynamic programming:{bcolors.ENDC} {dp_solution}, time: {time_list[5] - time_list[4]}")
+    #
 
 if __name__ == "__main__":
     main()
