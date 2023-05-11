@@ -2,10 +2,11 @@ import numpy as np
 import random as rd
 import math
 from utils.instance import MAX_CAPACITY
-from local_search.heuristics import  best_fit, first_fit, next_fit, space
+from simulated_annealing.heuristics import  best_fit, first_fit, next_fit, space
 def simulated_annealing(items,  temperature, time, schedule ):
     temperature = temperature
-    solution: list[list[int]]= next_fit(items)
+    solution: list[list[int]]= first_fit(items)
+    print(f"Initial solution {len(solution)}")
     optimum = sum(items)/MAX_CAPACITY
     optimum_space = ((math.ceil(optimum)- optimum)*MAX_CAPACITY)/math.ceil(optimum)
     print(optimum)

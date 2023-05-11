@@ -2,7 +2,7 @@ import time
 
 from heuristic.heuristic import heuristic, get_solution
 from branch_bound.branch_bound import branch_and_bound
-from local_search.simulated_annealing import simulated_annealing
+from simulated_annealing.simulated_annealing import simulated_annealing
 
 from utils.solution import Solution
 from utils.instance import INPUT_ITEMS, NUM_ITEMS
